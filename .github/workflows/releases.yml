@@ -1,6 +1,9 @@
 name: Build upstream Watchman releases
 
 on:
+  push:
+    paths:
+      - '.github/workflows/releases.yml'
   schedule:
     - cron: '17 * * * *'
   workflow_dispatch:
@@ -19,6 +22,7 @@ concurrency:
 
 jobs:
   discover:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-24.04
     outputs:
       tags: ${{ steps.releases.outputs.tags }}
